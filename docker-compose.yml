@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0.28-oracle
+    container_name: mysql-standalone
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3309:3309"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: devsu
+      MYSQL_TCP_PORT: 3309
+
+  devsu-server:
+    container_name: devsu-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8282:8282"
+    depends_on:
+      - mysql
